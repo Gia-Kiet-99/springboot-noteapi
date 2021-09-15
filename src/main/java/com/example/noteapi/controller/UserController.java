@@ -4,10 +4,7 @@ import com.example.noteapi.model.User;
 import com.example.noteapi.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -26,5 +23,12 @@ public class UserController {
   public ResponseEntity<List<User>> getAllUser() {
     List<User> users = userService.getAll();
     return ResponseEntity.ok(users);
+  }
+
+  @PostMapping("")
+  @ResponseBody
+  public ResponseEntity<User> createNewUser(@RequestBody User user) {
+    User newUser = userService.add(user);
+    return ResponseEntity.ok(newUser);
   }
 }
