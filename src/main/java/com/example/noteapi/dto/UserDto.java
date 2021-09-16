@@ -1,17 +1,21 @@
 package com.example.noteapi.dto;
 
+import com.example.noteapi.config.annotation.GikiNotEmpty;
 import com.example.noteapi.model.User;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Data
-@NoArgsConstructor @AllArgsConstructor
+@NoArgsConstructor
+@AllArgsConstructor
 public class UserDto {
-  private Long id;
+  @GikiNotEmpty
   private String name;
 
   public static User convertToUser(UserDto dto) {
-    return new User(dto.getId(), dto.getName());
+    User user = new User();
+    user.setName(dto.getName());
+    return user;
   }
 }

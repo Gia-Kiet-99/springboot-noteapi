@@ -1,6 +1,5 @@
 package com.example.noteapi.model;
 
-import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -10,7 +9,7 @@ import java.io.Serializable;
 @Entity
 @Table(name = "user")
 @Data
-@NoArgsConstructor @AllArgsConstructor
+@NoArgsConstructor
 public class User implements Serializable {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
