@@ -1,5 +1,6 @@
 package com.example.noteapi.controller;
 
+import com.example.noteapi.dto.UserDto;
 import com.example.noteapi.model.User;
 import com.example.noteapi.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,8 +28,9 @@ public class UserController {
 
   @PostMapping("")
   @ResponseBody
-  public ResponseEntity<User> createNewUser(@RequestBody User user) {
-    User newUser = userService.add(user);
+  public ResponseEntity<User> createNewUser(@RequestBody UserDto userDto) {
+    User userFromDto = UserDto.convertToUser(userDto);
+    User newUser = userService.add(userFromDto);
     return ResponseEntity.ok(newUser);
   }
 }
