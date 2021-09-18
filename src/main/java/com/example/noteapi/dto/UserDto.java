@@ -10,6 +10,14 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class UserDto {
+  private Long id;
+  /*
+  # Validate Annotation
+  ## Use default annotation (defined in dependency: hibernate-validator)
+    @NotEmpty: the property is not null or empty; can be applied to String, Collection, Map or Array values.
+    @NotBlank: can be applied only to text values and validates that the property is not null or whitespace.
+  ## Or create custom validate (GikiNotEmpty)
+  */
   @GikiNotEmpty
   private String name;
 

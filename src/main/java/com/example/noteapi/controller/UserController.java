@@ -28,6 +28,13 @@ public class UserController {
     return ResponseEntity.ok(users);
   }
 
+  @GetMapping("/{userId}")
+  @ResponseBody
+  public ResponseEntity<UserDto> getUserById(@PathVariable("userId") Long userId) {
+    UserDto userDto = userService.getById(userId);
+    return ResponseEntity.ok(userDto);
+  }
+
   @GetMapping("/")
   public ResponseEntity<List<User>> getUsersByName(
       @RequestParam(value = "name", required = false) String name) {

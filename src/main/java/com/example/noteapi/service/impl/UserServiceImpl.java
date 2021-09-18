@@ -1,5 +1,6 @@
 package com.example.noteapi.service.impl;
 
+import com.example.noteapi.dto.UserDto;
 import com.example.noteapi.model.User;
 import com.example.noteapi.repository.UserRepository;
 import com.example.noteapi.service.UserService;
@@ -37,6 +38,12 @@ public class UserServiceImpl implements UserService {
     return Optional.ofNullable(name)
         .map(userRepository::findUsersByName)
         .orElse(new ArrayList<>());
+  }
+
+  @Override
+  public UserDto getById(Long id) {
+    User user = userRepository.findUserById(id);
+    return new UserDto(user.getId(), user.getName());
   }
 
 }
