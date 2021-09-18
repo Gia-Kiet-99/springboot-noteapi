@@ -1,4 +1,4 @@
-package com.example.noteapi.config.annotation;
+package com.example.noteapi.annotation;
 
 import com.example.noteapi.validator.NotEmptyValidator;
 

@@ -29,6 +29,8 @@ dependencies {
   implementation 'mysql:mysql-connector-java:8.0.26'
   implementation 'org.hibernate:hibernate-validator:7.0.1.Final'
 
+  implementation 'org.modelmapper:modelmapper:2.4.4'
+
 }
 
 test {

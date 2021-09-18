@@ -1,6 +1,6 @@
 package com.example.noteapi.dto;
 
-import com.example.noteapi.config.annotation.GikiNotEmpty;
+import com.example.noteapi.annotation.GikiNotEmpty;
 import com.example.noteapi.model.User;
 import lombok.AllArgsConstructor;
 import lombok.Data;

@@ -1,6 +1,6 @@
 package com.example.noteapi.validator;
 
-import com.example.noteapi.config.annotation.GikiNotEmpty;
+import com.example.noteapi.annotation.GikiNotEmpty;
 
 import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
