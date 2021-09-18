@@ -1,25 +1,27 @@
 package com.example.noteapi.util;
 
+import com.example.noteapi.dto.UserDto;
+import com.example.noteapi.model.User;
 import org.modelmapper.ModelMapper;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
 
-@Component
-public class UserConverter<E, D> implements Converter<E, D> {
+public class UserConverter implements Converter<User, UserDto> {
   private final ModelMapper modelMapper;
+  private final Class<User> userClass;
+  private final Class<UserDto> userDtoClass;
 
-  @Autowired
-  public UserConverter(ModelMapper modelMapper) {
+  public UserConverter(ModelMapper modelMapper, Class<User> userClass, Class<UserDto> userDtoClass) {
     this.modelMapper = modelMapper;
+    this.userClass = userClass;
+    this.userDtoClass = userDtoClass;
   }
 
   @Override
-  public D convertToDto(E entity, Class<D> dClass) {
-    return modelMapper.map(entity, dClass);
+  public UserDto convertToDto(User entity) {
+    return modelMapper.map(entity, userDtoClass);
   }
 
   @Override
-  public E convertToEntity(D dto, Class<E> eClass) {
-    return modelMapper.map(dto, eClass);
+  public User convertToEntity(UserDto dto) {
+    return modelMapper.map(dto, userClass);
   }
 }

@@ -3,7 +3,7 @@ package com.example.noteapi.controller;
 import com.example.noteapi.dto.UserDto;
 import com.example.noteapi.model.User;
 import com.example.noteapi.service.UserService;
-import com.example.noteapi.util.Converter;
+import com.example.noteapi.util.UserConverter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -16,10 +16,10 @@ import java.util.stream.Collectors;
 @RequestMapping("/users")
 public class UserController {
   private final UserService userService;
-  private final Converter<User, UserDto> converter;
+  private final UserConverter converter;
 
   @Autowired
-  public UserController(UserService userService, Converter<User, UserDto> converter) {
+  public UserController(UserService userService, UserConverter converter) {
     this.userService = userService;
     this.converter = converter;
   }
@@ -30,7 +30,7 @@ public class UserController {
       @RequestParam(value = "limit", required = false) Integer limit) {
     List<User> users = userService.getAll(limit);
     List<UserDto> dtos = users.stream()
-        .map(user -> converter.convertToDto(user, UserDto.class))
+        .map(converter::convertToDto)
         .collect(Collectors.toList());
     return ResponseEntity.ok(dtos);
   }
@@ -39,7 +39,7 @@ public class UserController {
   @ResponseBody
   public ResponseEntity<UserDto> getUserById(@PathVariable("userId") long userId) {
     User user = userService.getById(userId);
-    UserDto dto = converter.convertToDto(user, UserDto.class);
+    UserDto dto = converter.convertToDto(user);
     return ResponseEntity.ok(dto);
   }
 
@@ -48,7 +48,7 @@ public class UserController {
       @RequestParam(value = "name", required = false) String name) {
     List<User> users = userService.getByName(name);
     List<UserDto> dtos = users.stream()
-        .map(user -> converter.convertToDto(user, UserDto.class))
+        .map(converter::convertToDto)
         .collect(Collectors.toList());
     return ResponseEntity.ok(dtos);
   }
@@ -57,9 +57,9 @@ public class UserController {
   @ResponseBody
   /* Đánh dấu object với @Valid để validator tự động kiểm tra object đó có hợp lệ hay không */
   public ResponseEntity<UserDto> createNewUser(@Valid @RequestBody UserDto userDto) {
-    User userFromDto = converter.convertToEntity(userDto, User.class);
+    User userFromDto = converter.convertToEntity(userDto);
     User newUser = userService.add(userFromDto);
-    UserDto dto = converter.convertToDto(newUser, UserDto.class);
+    UserDto dto = converter.convertToDto(newUser);
     return ResponseEntity.ok(dto);
   }
 }

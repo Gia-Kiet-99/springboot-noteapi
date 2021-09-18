@@ -18,11 +18,9 @@ public class Note {
   private Long id;
 
   @Column(name = "title", nullable = false)
-  @NotEmpty
   private String title;
 
   @Column(name = "content", nullable = false)
-  @NotEmpty
   private String content;
 
   @ManyToOne
