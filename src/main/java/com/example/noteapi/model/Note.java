@@ -6,22 +6,28 @@ import lombok.NoArgsConstructor;
 import lombok.ToString;
 
 import javax.persistence.*;
-import java.util.List;
+import javax.validation.constraints.NotEmpty;
 
 @Entity
-@Table(name = "user")
+@Table(name = "note")
 @Data
 @NoArgsConstructor
-public class User {
+public class Note {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
 
-  @Column(name = "name")
-  private String name;
+  @Column(name = "title", nullable = false)
+  @NotEmpty
+  private String title;
 
-  @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+  @Column(name = "content", nullable = false)
+  @NotEmpty
+  private String content;
+
+  @ManyToOne
+  @JoinColumn(name = "user_id", nullable = false)
   @EqualsAndHashCode.Exclude
   @ToString.Exclude
-  private List<Note> notes;
+  private User user;
 }
