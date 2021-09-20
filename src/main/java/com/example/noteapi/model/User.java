@@ -1,5 +1,7 @@
 package com.example.noteapi.model;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
@@ -15,6 +17,8 @@ import java.util.List;
 public class User {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
+  @Schema(description = "User UUID in the database")
+  @JsonProperty("id")
   private Long id;
 
   @Column(name = "name")
