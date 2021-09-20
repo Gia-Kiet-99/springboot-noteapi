@@ -1,6 +1,7 @@
 package com.example.noteapi.service.impl;
 
 import com.example.noteapi.model.Note;
+import com.example.noteapi.model.User;
 import com.example.noteapi.repository.NoteRepository;
 import com.example.noteapi.service.NoteService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,6 +24,13 @@ public class NoteServiceImpl implements NoteService {
   }
 
   @Override
+  public List<Note> getByUserId(Long userId) {
+    User user = new User();
+    user.setId(userId);
+    return noteRepository.findNotesByUser(user);
+  }
+
+  @Override
   public Note getById(Long id) {
     return noteRepository.findNoteById(id);
   }
@@ -33,7 +41,7 @@ public class NoteServiceImpl implements NoteService {
   }
 
   @Override
-  public Note delete(Long id) {
-    return noteRepository.deleteNoteById(id);
+  public int delete(Long id) {
+    return noteRepository.removeNoteById(id);
   }
 }

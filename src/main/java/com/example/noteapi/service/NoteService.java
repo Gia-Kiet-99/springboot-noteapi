@@ -7,9 +7,11 @@ import java.util.List;
 public interface NoteService {
   List<Note> getAll();
 
+  List<Note> getByUserId(Long userId);
+
   Note getById(Long id);
 
   Note add(Note note);
 
-  Note delete(Long id);
+  int delete(Long id);
 }

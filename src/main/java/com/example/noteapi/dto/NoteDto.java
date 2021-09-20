@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotEmpty;
 
 @Data
@@ -12,9 +13,11 @@ import javax.validation.constraints.NotEmpty;
 @AllArgsConstructor
 public class NoteDto {
   private Long id;
+  @NotBlank
   @NotEmpty // default validation
   private String title;
   @GikiNotEmpty // custom validation
   private String content;
-//  private User user;
+  @GikiNotEmpty
+  private String userId;
 }
