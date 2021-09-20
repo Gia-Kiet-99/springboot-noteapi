@@ -4,12 +4,6 @@ import com.example.noteapi.model.User;
 
 import java.util.List;
 
-public interface UserService {
-  List<User> getAll(Integer limit);
-
-  User add(User user);
-
+public interface UserService extends CrudService<User> {
   List<User> getByName(String name);
-
-  User getById(Long id);
 }

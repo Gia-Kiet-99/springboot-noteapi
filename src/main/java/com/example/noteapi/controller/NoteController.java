@@ -65,8 +65,12 @@ public class NoteController {
 
   @DeleteMapping("/{noteId}")
   @ResponseBody
-  public ResponseEntity<Integer> deleteNote(@PathVariable(value = "noteId") Long noteId) {
-    return ResponseEntity.ok(noteService.delete(noteId));
+  public ResponseEntity<List<NoteDto>> deleteNote(@PathVariable(value = "noteId") Long noteId) {
+    List<Note> notes = noteService.delete(noteId);
+    List<NoteDto> dtos = notes.stream()
+        .map(converter::convertToDto)
+        .collect(Collectors.toList());
+    return ResponseEntity.ok(dtos);
   }
 
 }

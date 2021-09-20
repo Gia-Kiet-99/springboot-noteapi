@@ -13,5 +13,5 @@ public interface NoteService {
 
   Note add(Note note);
 
-  int delete(Long id);
+  List<Note> delete(Long id);
 }

@@ -28,7 +28,7 @@ public class UserController {
   @ResponseBody
   public ResponseEntity<List<UserDto>> getAllUser(
       @RequestParam(value = "limit", required = false) Integer limit) {
-    List<User> users = userService.getAll(limit);
+    List<User> users = userService.getAll(0, limit);
     List<UserDto> dtos = users.stream()
         .map(converter::convertToDto)
         .collect(Collectors.toList());

@@ -16,7 +16,7 @@ public interface NoteRepository extends JpaRepository<Note, Long> {
 
   // Note that we need to use the @Transactional annotation for delete methods.
   @Transactional
-  int removeNoteById(Long id);
+  List<Note> removeById(Long id);
 
   List<Note> findNotesByUser(User user);
 

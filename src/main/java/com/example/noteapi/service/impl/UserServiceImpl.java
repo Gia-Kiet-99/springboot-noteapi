@@ -21,10 +21,15 @@ public class UserServiceImpl implements UserService {
   }
 
   @Override
-  public List<User> getAll(Integer limit) {
+  public List<User> getAll(Integer page, Integer limit) {
     return Optional.ofNullable(limit)
         .map(value -> userRepository.findAll(PageRequest.of(0, value)).getContent())
         .orElseGet(userRepository::findAll);
+  }
+
+  @Override
+  public User getById(long id) {
+    return userRepository.findUserById(id);
   }
 
   @Override
@@ -33,15 +38,14 @@ public class UserServiceImpl implements UserService {
   }
 
   @Override
+  public int remove(long id) {
+    return userRepository.removeById(id);
+  }
+
+  @Override
   public List<User> getByName(String name) {
     return Optional.ofNullable(name)
         .map(userRepository::findUsersByName)
         .orElse(new ArrayList<>());
   }
-
-  @Override
-  public User getById(Long id) {
-    return userRepository.findUserById(id);
-  }
-
 }
