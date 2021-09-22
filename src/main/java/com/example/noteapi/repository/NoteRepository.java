@@ -9,18 +9,19 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.UUID;
 
 @Repository
 public interface NoteRepository extends JpaRepository<Note, Long> {
-  Note findNoteById(Long id);
+  Note findNoteById(UUID id);
 
   // Note that we need to use the @Transactional annotation for delete methods.
   @Transactional
-  List<Note> removeById(Long id);
+  List<Note> removeById(UUID id);
 
   List<Note> findNotesByUser(User user);
 
   @Query(value = "delete from Note n where n.id = :id")
-  int deleteNoteByIdQuery(@Param("id") Long id);
+  int deleteNoteByIdQuery(@Param("id") UUID id);
 
 }

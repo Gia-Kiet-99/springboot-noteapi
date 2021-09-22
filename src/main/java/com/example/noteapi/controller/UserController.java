@@ -1,33 +1,35 @@
 package com.example.noteapi.controller;
 
+import com.example.noteapi.dto.SignUpRequest;
 import com.example.noteapi.dto.UserDto;
 import com.example.noteapi.model.User;
 import com.example.noteapi.service.UserService;
-import com.example.noteapi.util.UserConverter;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.ArraySchema;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.List;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/users")
 public class UserController {
   private final UserService userService;
-  private final UserConverter converter;
+  private final ModelMapper mapper;
 
   @Autowired
-  public UserController(UserService userService, UserConverter converter) {
+  public UserController(UserService userService, ModelMapper mapper) {
     this.userService = userService;
-    this.converter = converter;
+    this.mapper = mapper;
   }
 
   @Operation(
@@ -52,25 +54,25 @@ public class UserController {
       @RequestParam(value = "limit", required = false) Integer limit) {
     List<User> users = userService.getAll(0, limit);
     List<UserDto> dtos = users.stream()
-        .map(converter::convertToDto)
+        .map(user -> mapper.map(user, UserDto.class))
         .collect(Collectors.toList());
     return ResponseEntity.ok(dtos);
   }
 
   @GetMapping("/{userId}")
   @ResponseBody
-  public ResponseEntity<UserDto> getUserById(@PathVariable("userId") long userId) {
+  public ResponseEntity<UserDto> getUserById(@PathVariable("userId") UUID userId) {
     User user = userService.getById(userId);
-    UserDto dto = converter.convertToDto(user);
+    UserDto dto = mapper.map(user, UserDto.class);
     return ResponseEntity.ok(dto);
   }
 
   @GetMapping("/")
   public ResponseEntity<List<UserDto>> getUsersByName(
-      @RequestParam(value = "name", required = false) String name) {
+      @RequestParam(value = "fullName", required = false) String name) {
     List<User> users = userService.getByName(name);
     List<UserDto> dtos = users.stream()
-        .map(converter::convertToDto)
+        .map(user -> mapper.map(user, UserDto.class))
         .collect(Collectors.toList());
     return ResponseEntity.ok(dtos);
   }
@@ -78,10 +80,11 @@ public class UserController {
   @PostMapping("")
   @ResponseBody
   /* Đánh dấu object với @Valid để validator tự động kiểm tra object đó có hợp lệ hay không */
-  public ResponseEntity<UserDto> createNewUser(@Valid @RequestBody UserDto userDto) {
-    User userFromDto = converter.convertToEntity(userDto);
+  public ResponseEntity<UserDto> createNewUser(@Valid @RequestBody SignUpRequest signUpRequest) {
+    User userFromDto = mapper.map(signUpRequest, User.class);
+
     User newUser = userService.add(userFromDto);
-    UserDto dto = converter.convertToDto(newUser);
+    UserDto dto = mapper.map(newUser, UserDto.class);
     return ResponseEntity.ok(dto);
   }
 }

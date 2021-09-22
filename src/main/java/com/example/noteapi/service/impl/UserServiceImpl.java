@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -28,24 +29,24 @@ public class UserServiceImpl implements UserService {
   }
 
   @Override
-  public User getById(long id) {
+  public User getById(UUID id) {
     return userRepository.findUserById(id);
   }
 
   @Override
   public User add(User user) {
-    return userRepository.save(user);
+    return userRepository.saveAndFlush(user);
   }
 
   @Override
-  public int remove(long id) {
+  public int remove(UUID id) {
     return userRepository.removeById(id);
   }
 
   @Override
   public List<User> getByName(String name) {
     return Optional.ofNullable(name)
-        .map(userRepository::findUsersByName)
+        .map(userRepository::findUsersByFullName)
         .orElse(new ArrayList<>());
   }
 }

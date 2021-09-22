@@ -3,7 +3,7 @@ package com.example.noteapi.controller;
 import com.example.noteapi.dto.NoteDto;
 import com.example.noteapi.model.Note;
 import com.example.noteapi.service.NoteService;
-import com.example.noteapi.util.NoteConverter;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -11,18 +11,19 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.List;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/notes")
 public class NoteController {
   private final NoteService noteService;
-  private final NoteConverter converter;
+  private final ModelMapper mapper;
 
   @Autowired
-  public NoteController(NoteService service, NoteConverter converter) {
+  public NoteController(NoteService service, ModelMapper mapper) {
     this.noteService = service;
-    this.converter = converter;
+    this.mapper = mapper;
   }
 
   @GetMapping("")
@@ -30,7 +31,7 @@ public class NoteController {
   public ResponseEntity<List<NoteDto>> getAllNotes() {
     List<Note> notes = noteService.getAll();
     List<NoteDto> noteDtos = notes.stream()
-        .map(converter::convertToDto)
+        .map(note -> mapper.map(note, NoteDto.class))
         .collect(Collectors.toList());
     return ResponseEntity.ok(noteDtos);
   }
@@ -38,37 +39,37 @@ public class NoteController {
   @PostMapping("")
   @ResponseBody
   public ResponseEntity<NoteDto> createNewNote(@Valid @RequestBody NoteDto noteDto) {
-    Note noteToPost = converter.convertToEntity(noteDto);
+    Note noteToPost = mapper.map(noteDto, Note.class);
     Note newNote = noteService.add(noteToPost);
-    NoteDto resDto = converter.convertToDto(newNote);
+    NoteDto resDto = mapper.map(newNote, NoteDto.class);
     return ResponseEntity.status(HttpStatus.CREATED).body(resDto);
   }
 
   @GetMapping("/")
   @ResponseBody
   public ResponseEntity<List<NoteDto>> getNotesByUserId(
-      @RequestParam(value = "userId", required = false) Long userId) {
+      @RequestParam(value = "userId", required = false) UUID userId) {
     List<Note> notes = noteService.getByUserId(userId);
     List<NoteDto> dtos = notes.stream()
-        .map(converter::convertToDto)
+        .map(note -> mapper.map(note, NoteDto.class))
         .collect(Collectors.toList());
     return ResponseEntity.ok(dtos);
   }
 
   @GetMapping("/{noteId}")
   @ResponseBody
-  public ResponseEntity<NoteDto> getNoteById(@PathVariable(value = "noteId") Long noteId) {
+  public ResponseEntity<NoteDto> getNoteById(@PathVariable(value = "noteId") UUID noteId) {
     Note note = noteService.getById(noteId);
-    NoteDto noteDto = converter.convertToDto(note);
+    NoteDto noteDto = mapper.map(note, NoteDto.class);
     return ResponseEntity.ok(noteDto);
   }
 
   @DeleteMapping("/{noteId}")
   @ResponseBody
-  public ResponseEntity<List<NoteDto>> deleteNote(@PathVariable(value = "noteId") Long noteId) {
+  public ResponseEntity<List<NoteDto>> deleteNote(@PathVariable(value = "noteId") UUID noteId) {
     List<Note> notes = noteService.delete(noteId);
     List<NoteDto> dtos = notes.stream()
-        .map(converter::convertToDto)
+        .map(note -> mapper.map(note, NoteDto.class))
         .collect(Collectors.toList());
     return ResponseEntity.ok(dtos);
   }

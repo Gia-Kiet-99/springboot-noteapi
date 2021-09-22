@@ -1,16 +1,18 @@
 package com.example.noteapi.dto;
 
 import com.example.noteapi.annotation.GikiNotEmpty;
-import com.example.noteapi.model.User;
+import com.example.noteapi.annotation.GikiPhoneNumber;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
+import java.util.UUID;
 
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 public class UserDto {
-  private Long id;
+  private UUID id;
   /*
   # Validate Annotation
   ## Use default annotation (defined in dependency: hibernate-validator)
@@ -19,11 +21,7 @@ public class UserDto {
   ## Or create custom validate (GikiNotEmpty)
   */
   @GikiNotEmpty
-  private String name;
-
-  public static User convertToUser(UserDto dto) {
-    User user = new User();
-    user.setName(dto.getName());
-    return user;
-  }
+  private String fullName;
+  @GikiPhoneNumber
+  private String phone;
 }

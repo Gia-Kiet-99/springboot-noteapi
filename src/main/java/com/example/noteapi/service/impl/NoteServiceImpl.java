@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.UUID;
 
 @Service
 public class NoteServiceImpl implements NoteService {
@@ -24,14 +25,14 @@ public class NoteServiceImpl implements NoteService {
   }
 
   @Override
-  public List<Note> getByUserId(Long userId) {
+  public List<Note> getByUserId(UUID userId) {
     User user = new User();
     user.setId(userId);
     return noteRepository.findNotesByUser(user);
   }
 
   @Override
-  public Note getById(Long id) {
+  public Note getById(UUID id) {
     return noteRepository.findNoteById(id);
   }
 
@@ -41,7 +42,7 @@ public class NoteServiceImpl implements NoteService {
   }
 
   @Override
-  public List<Note> delete(Long id) {
+  public List<Note> delete(UUID id) {
     return noteRepository.removeById(id);
   }
 }

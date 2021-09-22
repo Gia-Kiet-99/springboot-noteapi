@@ -8,16 +8,17 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.UUID;
 
 @Repository
-public interface UserRepository extends JpaRepository<User, Long> {
-  User findUserById(Long id);
+public interface UserRepository extends JpaRepository<User, UUID> {
+  User findUserById(UUID id);
 
-  List<User> findUsersByName(String name);
+  List<User> findUsersByFullName(String name);
 
-  @Query(value = "select u from User u where u.name = :name")
+  @Query(value = "select u from User u where u.fullName = :name")
   List<User> findUserByNameQuery(@Param("name") String name);
 
   @Transactional
-  int removeById(Long id);
+  int removeById(UUID id);
 }

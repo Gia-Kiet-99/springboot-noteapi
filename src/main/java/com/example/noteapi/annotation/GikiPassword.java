@@ -1,21 +1,18 @@
 package com.example.noteapi.annotation;
 
-import com.example.noteapi.validator.NotEmptyValidator;
+import com.example.noteapi.validator.PasswordValidator;
 
 import javax.validation.Constraint;
 import javax.validation.Payload;
 import java.lang.annotation.*;
 
-/**
- * The annotated element must not be null and must contain at least one non-whitespace character.
- */
 @Documented
-@Constraint(validatedBy = NotEmptyValidator.class)
+@Constraint(validatedBy = PasswordValidator.class)
 @Target({ElementType.METHOD, ElementType.FIELD})
 @Retention(RetentionPolicy.RUNTIME)
-public @interface GikiNotEmpty {
+public @interface GikiPassword {
   // trường message là bắt buộc, khai báo nội dung sẽ trả về khi field k hợp lệ
-  String message() default "must not be empty or null";
+  String message() default "must contain the following: a lowercase letter, a capital letter, a number and minimum 8 characters";
 
   // Cái này là bắt buộc phải có để Hibernate Validator có thể hoạt động
   Class<?>[] groups() default {};

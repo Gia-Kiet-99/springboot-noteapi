@@ -6,18 +6,18 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
+import java.util.UUID;
 
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 public class NoteDto {
-  private Long id;
-  @NotBlank
-  @NotEmpty // default validation
+  private UUID id;
+  @NotBlank // default validation
   private String title;
-  @GikiNotEmpty // custom validation
+  @GikiNotEmpty // custom validation (similar @NotBlank)
   private String content;
-  @GikiNotEmpty
-  private String userId;
+  @NotNull
+  private UUID userId;
 }

@@ -1,7 +1,5 @@
 package com.example.noteapi.model;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
-import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
@@ -9,6 +7,7 @@ import lombok.ToString;
 
 import javax.persistence.*;
 import java.util.List;
+import java.util.UUID;
 
 @Entity
 @Table(name = "user")
@@ -16,13 +15,20 @@ import java.util.List;
 @NoArgsConstructor
 public class User {
   @Id
-  @GeneratedValue(strategy = GenerationType.IDENTITY)
-  @Schema(description = "User UUID in the database")
-  @JsonProperty("id")
-  private Long id;
+  @GeneratedValue
+  @Column(columnDefinition = "BINARY(16)", updatable = false)
+  private UUID id;
 
-  @Column(name = "name")
-  private String name;
+  @Column(name = "full_name", nullable = false)
+  private String fullName;
+
+  @Column(name = "phone")
+  private String phone;
+
+  @Column(name = "username", nullable = false, unique = true)
+  private String username;
+  @Column(name = "password", nullable = false)
+  private String password;
 
   @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
   @EqualsAndHashCode.Exclude

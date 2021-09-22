@@ -1,21 +1,18 @@
 package com.example.noteapi.annotation;
 
-import com.example.noteapi.validator.NotEmptyValidator;
+import com.example.noteapi.validator.PhoneNumberValidator;
 
 import javax.validation.Constraint;
 import javax.validation.Payload;
 import java.lang.annotation.*;
 
-/**
- * The annotated element must not be null and must contain at least one non-whitespace character.
- */
 @Documented
-@Constraint(validatedBy = NotEmptyValidator.class)
+@Constraint(validatedBy = PhoneNumberValidator.class)
 @Target({ElementType.METHOD, ElementType.FIELD})
 @Retention(RetentionPolicy.RUNTIME)
-public @interface GikiNotEmpty {
+public @interface GikiPhoneNumber {
   // trường message là bắt buộc, khai báo nội dung sẽ trả về khi field k hợp lệ
-  String message() default "must not be empty or null";
+  String message() default "invalid phone number";
 
   // Cái này là bắt buộc phải có để Hibernate Validator có thể hoạt động
   Class<?>[] groups() default {};

@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 import lombok.ToString;
 
 import javax.persistence.*;
+import java.util.UUID;
 
 @Entity
 @Table(name = "note")
@@ -13,8 +14,9 @@ import javax.persistence.*;
 @NoArgsConstructor
 public class Note {
   @Id
-  @GeneratedValue(strategy = GenerationType.IDENTITY)
-  private Long id;
+  @GeneratedValue
+  @Column(columnDefinition = "BINARY(16)")
+  private UUID id;
 
   @Column(name = "title", nullable = false)
   private String title;
@@ -23,7 +25,7 @@ public class Note {
   private String content;
 
   @ManyToOne
-  @JoinColumn(name = "user_id", nullable = false)
+  @JoinColumn(name = "user_id", nullable = false, foreignKey = @ForeignKey(name = "fk_note_user_userId"))
   @EqualsAndHashCode.Exclude
   @ToString.Exclude
   private User user;
