@@ -15,7 +15,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import javax.validation.Valid;
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
@@ -75,16 +74,5 @@ public class UserController {
         .map(user -> mapper.map(user, UserDto.class))
         .collect(Collectors.toList());
     return ResponseEntity.ok(dtos);
-  }
-
-  @PostMapping("")
-  @ResponseBody
-  /* Đánh dấu object với @Valid để validator tự động kiểm tra object đó có hợp lệ hay không */
-  public ResponseEntity<UserDto> createNewUser(@Valid @RequestBody SignUpRequest signUpRequest) {
-    User userFromDto = mapper.map(signUpRequest, User.class);
-
-    User newUser = userService.add(userFromDto);
-    UserDto dto = mapper.map(newUser, UserDto.class);
-    return ResponseEntity.ok(dto);
   }
 }

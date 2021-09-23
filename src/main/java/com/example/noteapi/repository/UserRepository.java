@@ -14,6 +14,8 @@ import java.util.UUID;
 public interface UserRepository extends JpaRepository<User, UUID> {
   User findUserById(UUID id);
 
+  User findByUsername(String username);
+
   List<User> findUsersByFullName(String name);
 
   @Query(value = "select u from User u where u.fullName = :name")

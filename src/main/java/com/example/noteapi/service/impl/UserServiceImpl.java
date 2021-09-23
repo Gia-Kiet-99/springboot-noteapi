@@ -2,9 +2,12 @@ package com.example.noteapi.service.impl;
 
 import com.example.noteapi.model.User;
 import com.example.noteapi.repository.UserRepository;
+import com.example.noteapi.security.CustomUserDetails;
 import com.example.noteapi.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -49,4 +52,22 @@ public class UserServiceImpl implements UserService {
         .map(userRepository::findUsersByFullName)
         .orElse(new ArrayList<>());
   }
+
+  @Override
+  public UserDetails loadUserById(UUID userId) {
+    User user = userRepository.findById(userId).orElseThrow(
+        () -> new UsernameNotFoundException("User not found with id : " + userId)
+    );
+    return new CustomUserDetails(user);
+  }
+
+  @Override
+  public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+    User user = userRepository.findByUsername(username);
+    if (user == null) {
+      throw new UsernameNotFoundException(username);
+    }
+    return new CustomUserDetails(user);
+  }
+
 }
